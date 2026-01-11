@@ -16,8 +16,8 @@ class CheckoutPage extends BasePage {
   }
 
   async goto() {
-    await this.page.goto('https://www.demoblaze.com/cart.html');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto('https://www.demoblaze.com/cart.html', { waitUntil: 'domcontentloaded' });
+    await this.page.waitForTimeout(1000);
   }
 
   async fillCheckoutForm(data) {
@@ -43,7 +43,7 @@ class CheckoutPage extends BasePage {
 
   async closeModal() {
     await this.closeButton.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
   }
 }
 

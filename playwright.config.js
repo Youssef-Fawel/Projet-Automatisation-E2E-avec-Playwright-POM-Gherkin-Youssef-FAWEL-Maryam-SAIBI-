@@ -6,6 +6,10 @@ module.exports = {
     headless: false,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    channel: 'msedge',
+    launchOptions: {
+      slowMo: 500,  // Slow down actions by 500ms
+    },
   },
 
   timeout: 30000,

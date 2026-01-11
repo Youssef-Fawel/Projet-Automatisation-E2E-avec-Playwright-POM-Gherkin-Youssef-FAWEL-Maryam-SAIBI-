@@ -22,6 +22,8 @@ test('Consulter les détails d\'un produit Phone', async ({ page }) => {
   // Vérifier le prix
   const price = await productDetailPage.getProductPrice();
   expect(price).toBeTruthy();
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Consulter les détails d\'un produit Laptop', async ({ page }) => {
@@ -44,6 +46,8 @@ test('Consulter les détails d\'un produit Laptop', async ({ page }) => {
   // Vérifier la description
   const description = await productDetailPage.getProductDescription();
   expect(description).toBeTruthy();
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Consulter les détails d\'un produit Monitor', async ({ page }) => {
@@ -65,6 +69,8 @@ test('Consulter les détails d\'un produit Monitor', async ({ page }) => {
   
   expect(name).toBeTruthy();
   expect(price).toBeTruthy();
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Ajouter un produit à partir de la page détail', async ({ page }) => {
@@ -92,6 +98,8 @@ test('Ajouter un produit à partir de la page détail', async ({ page }) => {
   const cp = new CartPage(page);
   const count = await cp.getCartItemCount();
   expect(count).toBe(1);
+  
+  await page.pause();  // Pause après le test
 });
 
 

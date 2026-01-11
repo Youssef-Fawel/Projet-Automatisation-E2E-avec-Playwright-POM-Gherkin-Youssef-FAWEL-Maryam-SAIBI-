@@ -9,13 +9,13 @@ class ProductDetailPage extends BasePage {
     this.productPrice = page.locator('.price-container');
     this.productDescription = page.locator('#more-information');
     this.quantityInput = page.locator('input#number');
-    this.addToCartButton = page.locator('button:has-text("Add to cart")');
+    this.addToCartButton = page.locator('.btn-success');  // Fixed selector
     this.addToWishlistButton = page.locator('a.hrefch:has-text("Add to favorites")');
   }
 
   async goto(productId) {
-    await this.page.goto(`https://www.demoblaze.com/prod.html?idp_=${productId}`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto(`https://www.demoblaze.com/prod.html?idp_=${productId}`, { waitUntil: 'domcontentloaded' });
+    await this.page.waitForSelector('.name', { timeout: 10000 });
   }
 
   async getProductName() {
@@ -36,6 +36,10 @@ class ProductDetailPage extends BasePage {
   }
 
   async addToCart() {
+    // Set up alert listener before clicking
+    this.page.once('dialog', async dialog => {
+      await dialog.accept();
+    });
     await this.addToCartButton.click();
     await this.page.waitForTimeout(1000);
   }

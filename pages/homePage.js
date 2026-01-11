@@ -13,34 +13,34 @@ class HomePage extends BasePage {
   }
 
   async goto() {
-    await this.page.goto('https://www.demoblaze.com/');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto('https://www.demoblaze.com/', { waitUntil: 'domcontentloaded' });
+    await this.page.waitForSelector('.hrefch', { timeout: 10000 });
   }
 
   async clickPhoneCategory() {
     await this.phoneCategory.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
   }
 
   async clickLaptopCategory() {
     await this.laptopCategory.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
   }
 
   async clickMonitorCategory() {
     await this.monitorCategory.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
   }
 
   async clickOnProduct(index) {
     const products = this.page.locator('.hrefch');
     await products.nth(index).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForSelector('.name', { timeout: 10000 });
   }
 
   async goToCart() {
     await this.cartLink.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
   }
 
   async getProductCount() {

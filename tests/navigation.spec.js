@@ -10,6 +10,8 @@ test('Naviguer vers la catégorie Phone', async ({ page }) => {
   
   const productCount = await homePage.getProductCount();
   expect(productCount).toBeGreaterThan(0);
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Naviguer vers la catégorie Laptop', async ({ page }) => {
@@ -20,6 +22,8 @@ test('Naviguer vers la catégorie Laptop', async ({ page }) => {
   
   const productCount = await homePage.getProductCount();
   expect(productCount).toBeGreaterThan(0);
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Naviguer vers la catégorie Monitor', async ({ page }) => {
@@ -30,4 +34,6 @@ test('Naviguer vers la catégorie Monitor', async ({ page }) => {
   
   const productCount = await homePage.getProductCount();
   expect(productCount).toBeGreaterThan(0);
+  
+  await page.pause();  // Pause après le test
 });

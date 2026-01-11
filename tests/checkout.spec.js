@@ -24,6 +24,8 @@ test('Accéder à la page de checkout', async ({ page }) => {
   // Vérifier que le formulaire s'affiche
   const nameInput = page.locator('#name');
   await expect(nameInput).toBeVisible();
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Remplir le formulaire de checkout', async ({ page }) => {
@@ -46,10 +48,10 @@ test('Remplir le formulaire de checkout', async ({ page }) => {
   
   // Remplir le formulaire
   const checkoutData = {
-    name: 'John Doe',
-    country: 'USA',
-    city: 'New York',
-    creditCard: '4111111111111111',
+    name: 'Youssef FAWEL',
+    country: 'France',
+    city: 'Paris',
+    creditCard: '445698453698745',
     month: '12',
     year: '2025'
   };
@@ -58,7 +60,9 @@ test('Remplir le formulaire de checkout', async ({ page }) => {
   
   // Vérifier que le nom est rempli
   const nameValue = await page.locator('#name').inputValue();
-  expect(nameValue).toBe('John Doe');
+  expect(nameValue).toBe('Youssef FAWEL');
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Compléter un achat complet', async ({ page }) => {
@@ -81,11 +85,11 @@ test('Compléter un achat complet', async ({ page }) => {
   
   // Remplir le formulaire
   const checkoutData = {
-    name: 'Jane Smith',
-    country: 'USA',
-    city: 'Los Angeles',
-    creditCard: '4111111111111111',
-    month: '11',
+    name: 'Maryam SAIBI',
+    country: 'France',
+    city: 'Paris',
+    creditCard: '4165265635355235',
+    month: '12',
     year: '2026'
   };
   
@@ -97,6 +101,8 @@ test('Compléter un achat complet', async ({ page }) => {
   // Vérifier le message de confirmation
   const confirmationMessage = await checkoutPage.getConfirmationMessage();
   expect(confirmationMessage).toBeTruthy();
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Vérifier les informations de paiement', async ({ page }) => {
@@ -117,12 +123,26 @@ test('Vérifier les informations de paiement', async ({ page }) => {
   // Cliquer sur Place Order
   await cartPage.checkout();
   
-  // Vérifier que les champs de paiement existent
-  const cardInput = page.locator('#card');
-  const monthInput = page.locator('#month');
-  const yearInput = page.locator('#year');
+  // Remplir les informations de paiement
+  const paymentData = {
+    name: 'Youssef FAWEL',
+    country: 'France',
+    city: 'Paris',
+    creditCard: '5555555555554444',
+    month: '06',
+    year: '2027'
+  };
   
-  await expect(cardInput).toBeVisible();
-  await expect(monthInput).toBeVisible();
-  await expect(yearInput).toBeVisible();
+  await checkoutPage.fillCheckoutForm(paymentData);
+  
+  // Vérifier que les champs sont correctement remplis
+  const cardValue = await page.locator('#card').inputValue();
+  const monthValue = await page.locator('#month').inputValue();
+  const yearValue = await page.locator('#year').inputValue();
+  
+  expect(cardValue).toBe('5555555555554444');
+  expect(monthValue).toBe('06');
+  expect(yearValue).toBe('2027');
+  
+  await page.pause();  // Pause après le test
 });

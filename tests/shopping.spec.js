@@ -26,6 +26,8 @@ test('Ajouter un produit au panier', async ({ page }) => {
   // Vérifier qu'il y a 1 article
   const count = await cartPage.getCartItemCount();
   expect(count).toBe(1);
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Ajouter plusieurs produits au panier', async ({ page }) => {
@@ -51,6 +53,8 @@ test('Ajouter plusieurs produits au panier', async ({ page }) => {
   // Vérifier qu'il y a 2 articles
   const count = await cartPage.getCartItemCount();
   expect(count).toBe(2);
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Supprimer un produit du panier', async ({ page }) => {
@@ -77,6 +81,8 @@ test('Supprimer un produit du panier', async ({ page }) => {
   // Vérifier qu'il y a 0 articles
   count = await cartPage.getCartItemCount();
   expect(count).toBe(0);
+  
+  await page.pause();  // Pause après le test
 });
 
 test('Vérifier le prix total du panier', async ({ page }) => {
@@ -96,5 +102,7 @@ test('Vérifier le prix total du panier', async ({ page }) => {
   // Vérifier le prix total
   const total = await cartPage.getTotalPrice();
   expect(total).toBeTruthy();
+  
+  await page.pause();  // Pause après le test
 });
 
