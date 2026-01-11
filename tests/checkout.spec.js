@@ -53,7 +53,7 @@ test('Remplir le formulaire de checkout', async ({ page }) => {
     city: 'Paris',
     creditCard: '445698453698745',
     month: '12',
-    year: '2025'
+    year: '2030'
   };
   
   await checkoutPage.fillCheckoutForm(checkoutData);
@@ -90,7 +90,7 @@ test('Compléter un achat complet', async ({ page }) => {
     city: 'Paris',
     creditCard: '4165265635355235',
     month: '12',
-    year: '2026'
+    year: '2032'
   };
   
   await checkoutPage.fillCheckoutForm(checkoutData);

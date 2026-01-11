@@ -6,7 +6,7 @@
   "test": "playwright test",
   "test:debug": "playwright test --debug",
   "test:headed": "playwright test --headed",
-  "bdd": "cucumber-js"
+  "bdd": "cucumber-js --fail-fast"
 },
 
   "keywords": [],

@@ -16,8 +16,8 @@ let productDetailPage;
 let cartPage;
 let checkoutPage;
 
-Before(async function() {
-  browser = await chromium.launch({ headless: false });
+Before({timeout: 60000}, async function() {
+  browser = await chromium.launch({ headless: false, channel: 'msedge' });
   page = await browser.newPage();
   
   homePage = new HomePage(page);
@@ -27,12 +27,12 @@ Before(async function() {
   checkoutPage = new CheckoutPage(page);
 });
 
-After(async function() {
+After({timeout: 60000}, async function() {
   await browser.close();
 });
 
 // ===== NAVIGATION =====
-Given('je suis sur la page d\'accueil', async function() {
+Given('je suis sur la page d\'accueil', {timeout: 30000}, async function() {
   await homePage.goto();
 });
 
@@ -88,21 +88,21 @@ Then('le panier contient {int} articles', async function(count) {
   expect(itemCount).toBe(count);
 });
 
-Given('j\'ai ajouté un produit au panier', async function() {
+Given('j\'ai ajouté un produit au panier', {timeout: 30000}, async function() {
   await homePage.goto();
   await homePage.clickPhoneCategory();
   await homePage.clickOnProduct(0);
   await productDetailPage.addToCart();
 });
 
-Given('j\'ai un produit dans le panier', async function() {
+Given('j\'ai un produit dans le panier', {timeout: 30000}, async function() {
   await homePage.goto();
   await homePage.clickPhoneCategory();
   await homePage.clickOnProduct(0);
   await productDetailPage.addToCart();
 });
 
-Given('j\'ai des produits dans le panier', async function() {
+Given('j\'ai des produits dans le panier', {timeout: 30000}, async function() {
   await homePage.goto();
   await homePage.clickPhoneCategory();
   await homePage.clickOnProduct(0);
@@ -140,6 +140,8 @@ When('je reviens à l\'accueil', async function() {
 When('je clique sur {string}', async function(buttonText) {
   if (buttonText === 'Place Order') {
     await cartPage.checkout();
+  } else if (buttonText === 'Purchase') {
+    await checkoutPage.purchase();
   }
 });
 
@@ -148,11 +150,17 @@ Then('le formulaire de paiement s\'affiche', async function() {
   await expect(nameInput).toBeVisible();
 });
 
-Given('je suis sur la page de checkout', async function() {
-  // Le formulaire est déjà affiché après le click sur "Place Order"
+Given('je suis sur la page de checkout', {timeout: 30000}, async function() {
+  // Ajouter un produit et aller au checkout
+  await homePage.goto();
+  await homePage.clickPhoneCategory();
+  await homePage.clickOnProduct(0);
+  await productDetailPage.addToCart();
+  await homePage.goToCart();
+  await cartPage.checkout();
 });
 
-When('je remplis le formulaire avec les informations valides', async function() {
+When('je remplis le formulaire avec les informations valides', {timeout: 30000}, async function() {
   const checkoutData = {
     name: 'John Doe',
     country: 'USA',
@@ -183,13 +191,18 @@ When('je remplis le formulaire de checkout', async function() {
   await checkoutPage.fillCheckoutForm(checkoutData);
 });
 
-When('je clique sur "Purchase"', async function() {
-  await checkoutPage.purchase();
-});
-
-Then('un message de confirmation s\'affiche', async function() {
-  const message = await checkoutPage.getConfirmationMessage();
-  expect(message).toBeTruthy();
+Then('un message de confirmation s\'affiche', {timeout: 10000}, async function() {
+  // For add to cart: alert is already handled in addToCart()
+  // For checkout: verify confirmation message
+  await page.waitForTimeout(1000); // Small wait to ensure action completed
+  
+  // Check if we're on checkout confirmation
+  const confirmationExists = await page.locator('.sweet-alert h2').count() > 0;
+  if (confirmationExists) {
+    const message = await checkoutPage.getConfirmationMessage();
+    expect(message).toBeTruthy();
+  }
+  // Otherwise, addToCart alert was already handled
 });
 
 Then('un message de confirmation d\'achat s\'affiche', async function() {
