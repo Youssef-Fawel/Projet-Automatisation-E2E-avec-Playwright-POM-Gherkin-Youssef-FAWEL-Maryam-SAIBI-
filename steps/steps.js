@@ -78,13 +78,27 @@ When('j\'ajoute le produit au panier', async function() {
 
 Then('le panier contient {int} article', async function(count) {
   await homePage.goToCart();
-  const itemCount = await cartPage.getCartItemCount();
+  const timeout = 10000;
+  const interval = 500;
+  const start = Date.now();
+  let itemCount = await cartPage.getCartItemCount();
+  while (itemCount !== count && (Date.now() - start) < timeout) {
+    await page.waitForTimeout(interval);
+    itemCount = await cartPage.getCartItemCount();
+  }
   expect(itemCount).toBe(count);
 });
 
 Then('le panier contient {int} articles', async function(count) {
   await homePage.goToCart();
-  const itemCount = await cartPage.getCartItemCount();
+  const timeout = 10000;
+  const interval = 500;
+  const start = Date.now();
+  let itemCount = await cartPage.getCartItemCount();
+  while (itemCount !== count && (Date.now() - start) < timeout) {
+    await page.waitForTimeout(interval);
+    itemCount = await cartPage.getCartItemCount();
+  }
   expect(itemCount).toBe(count);
 });
 

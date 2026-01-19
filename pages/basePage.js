@@ -4,6 +4,7 @@ class BasePage {
     this.baseURL = 'https://www.demoblaze.com';
   }
 
+  // Utilisé partout :
   async click(selector) {
     await this.page.locator(selector).click();
   }
